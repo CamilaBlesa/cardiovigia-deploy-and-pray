@@ -4,7 +4,6 @@ import ar.edu.unsam.cardiovigia.model.Alerta;
 import ar.edu.unsam.cardiovigia.model.NivelRiesgo;
 import ar.edu.unsam.cardiovigia.model.SignoVital;
 import ar.edu.unsam.cardiovigia.service.AlertaService;
-import ar.edu.unsam.cardiovigia.service.RiesgoService;
 import ar.edu.unsam.cardiovigia.service.SignoVitalValidator;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -18,9 +17,6 @@ public class CardioVigiaStepDefinitions {
 
     @Autowired
     private SignoVitalValidator validator;
-
-    @Autowired
-    private RiesgoService riesgoService;
 
     @Autowired
     private AlertaService alertaService;
