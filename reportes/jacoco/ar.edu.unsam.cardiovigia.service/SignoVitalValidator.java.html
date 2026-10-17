@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SignoVitalValidator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">cardiovigia</a> &gt; <a href="index.source.html" class="el_package">ar.edu.unsam.cardiovigia.service</a> &gt; <span class="el_source">SignoVitalValidator.java</span></div><h1>SignoVitalValidator.java</h1><pre class="source lang-java linenums">package ar.edu.unsam.cardiovigia.service;
+
+import ar.edu.unsam.cardiovigia.model.SignoVital;
+import org.springframework.stereotype.Service;
+
+@Service
+<span class="fc" id="L7">public class SignoVitalValidator {</span>
+
+    /**
+     * RF-01 / RF-02: Valida rango de Frecuencia Cardíaca (0 - 300 lpm)
+     */
+    public boolean validarFrecuenciaCardiaca(int fc) {
+<span class="fc bfc" id="L13" title="All 4 branches covered.">        return fc &gt;= 0 &amp;&amp; fc &lt;= 300;</span>
+    }
+
+    /**
+     * RF-01 / RF-02: Valida rango de Presión Arterial Media (20 - 200 mmHg)
+     */
+    public boolean validarPresionArterialMedia(int pam) {
+<span class="fc bfc" id="L20" title="All 4 branches covered.">        return pam &gt;= 20 &amp;&amp; pam &lt;= 200;</span>
+    }
+
+    /**
+     * RF-01 / RF-02: Valida rango de Saturación de Oxígeno (0 - 100 %)
+     */
+    public boolean validarSaturacionOxigeno(int sat) {
+<span class="fc bfc" id="L27" title="All 4 branches covered.">        return sat &gt;= 0 &amp;&amp; sat &lt;= 100;</span>
+    }
+
+    /**
+     * RF-01 / RF-02: Valida rango de Temperatura (15.0 - 43.0 °C)
+     */
+    public boolean validarTemperatura(double temp) {
+<span class="fc bfc" id="L34" title="All 4 branches covered.">        return temp &gt;= 15.0 &amp;&amp; temp &lt;= 43.0;</span>
+    }
+
+    /**
+     * RF-03: Si un canal es insuficiente por más de 15 segundos, se marca NO confiable.
+     */
+    public boolean esCanalConfiable(int segundosSinSenal) {
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        return segundosSinSenal &lt;= 15;</span>
+    }
+
+    /**
+     * Validación integral de los signos vitales.
+     */
+    public boolean validarSignosVitales(SignoVital signos) {
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (signos == null) {</span>
+<span class="fc" id="L49">            return false;</span>
+        }
+
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (!esCanalConfiable(signos.getSegundosSinSenal())) {</span>
+<span class="fc" id="L53">            return false;</span>
+        }
+
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        return validarFrecuenciaCardiaca(signos.getFrecuenciaCardiaca())</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">                &amp;&amp; validarPresionArterialMedia(signos.getPresionArterialMedia())</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">                &amp;&amp; validarSaturacionOxigeno(signos.getSaturacionOxigeno())</span>
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">                &amp;&amp; validarTemperatura(signos.getTemperatura());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
