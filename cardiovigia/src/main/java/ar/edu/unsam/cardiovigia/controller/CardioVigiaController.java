@@ -1,7 +1,6 @@
 package ar.edu.unsam.cardiovigia.controller;
 
 import ar.edu.unsam.cardiovigia.model.Alerta;
-import ar.edu.unsam.cardiovigia.model.NivelRiesgo;
 import ar.edu.unsam.cardiovigia.model.Paciente;
 import ar.edu.unsam.cardiovigia.model.SignoVital;
 import ar.edu.unsam.cardiovigia.service.AlertaService;
