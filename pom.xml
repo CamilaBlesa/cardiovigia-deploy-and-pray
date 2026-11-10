@@ -16,7 +16,7 @@
     <artifactId>cardiovigia</artifactId>
     <version>2.4.0</version>
     <name>cardiovigia</name>
-    <description>Sistema CardioVigia 2.4.0 - Monitoreo de Cirugias Cardiacas con IA - TPI V&amp;V</description>
+    <description>Sistema CardioVigia 2.4.0 - Monitoreo de Cirugias Cardiacas con IA - TPI Deploy and Pray</description>
 
     <properties>
         <java.version>21</java.version>

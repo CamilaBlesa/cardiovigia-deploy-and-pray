@@ -67,6 +67,13 @@ public class CardioVigia {
         return "NO_ESCALA";
     }
 
+    public boolean debeSuprimirAlerta(String nivelAnterior, String nivelActual, int segundosDesdeUltimaAlerta) {
+        if (!nivelAnterior.equals(nivelActual)) {
+            return false;
+        }
+        return segundosDesdeUltimaAlerta < 120;
+    }
+
     public boolean debeActivarModoDegradado(int segundosSinSenal, boolean fallaIA) {
         return fallaIA || segundosSinSenal > 10;
     }

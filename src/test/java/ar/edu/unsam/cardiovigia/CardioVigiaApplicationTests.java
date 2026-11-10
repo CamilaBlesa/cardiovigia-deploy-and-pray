@@ -101,6 +101,15 @@ class CardioVigiaApplicationTests {
     }
 
     @Test
+    @DisplayName("RF-07: Supresión de fatiga de alarmas (< 120s para el mismo nivel)")
+    void testSupresionAlertas() {
+        assertTrue(cardioVigia.debeSuprimirAlerta("ALTO", "ALTO", 60));
+        assertTrue(cardioVigia.debeSuprimirAlerta("ALTO", "ALTO", 119));
+        assertFalse(cardioVigia.debeSuprimirAlerta("ALTO", "ALTO", 120));
+        assertFalse(cardioVigia.debeSuprimirAlerta("ALTO", "CRITICO", 30));
+    }
+
+    @Test
     @DisplayName("RF-08: Escalamiento automático a los 30s (Crítico) y 60s (Alto)")
     void testEscalamiento() {
         assertEquals("NO_ESCALA", cardioVigia.evaluarEscalamiento("CRITICO", 29));
