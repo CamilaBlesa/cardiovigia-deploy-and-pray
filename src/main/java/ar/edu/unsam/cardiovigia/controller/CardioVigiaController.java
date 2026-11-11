@@ -1,4 +1,4 @@
-package ar.edu.unsam.cardiovigia.postman.controller;
+package ar.edu.unsam.cardiovigia.controller;
 
 import ar.edu.unsam.cardiovigia.CardioVigia;
 import org.springframework.http.HttpStatus;
@@ -48,6 +48,51 @@ public class CardioVigiaController {
     @GetMapping("/calidad-senal/{canalId}")
     public ResponseEntity<CalidadSenalRespuesta> obtenerCalidadSenal(@PathVariable String canalId) {
         return ResponseEntity.ok(new CalidadSenalRespuesta(canalId, "CONFIABLE"));
+    }
+
+    // Pacientes (RF-04, RF-05)
+    @PostMapping("/pacientes")
+    public ResponseEntity<PacienteRespuesta> registrarPaciente(@RequestBody PacientePeticion peticion) {
+        // En implementación real, persistir paciente
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new PacienteRespuesta(peticion.pacienteId(), "REGISTRADO"));
+    }
+
+    @GetMapping("/pacientes/{pacienteId}")
+    public ResponseEntity<PacienteRespuesta> obtenerPaciente(@PathVariable String pacienteId) {
+        // En implementación real, consultar BD
+        return ResponseEntity.ok(new PacienteRespuesta(pacienteId, "ENCONTRADO"));
+    }
+
+    // Fases Quirúrgicas (RF-04)
+    @PutMapping("/pacientes/{pacienteId}/fase")
+    public ResponseEntity<CambioFaseRespuesta> cambiarFase(
+            @PathVariable String pacienteId,
+            @RequestBody CambioFasePeticion peticion) {
+
+        // Validar rol autorizado (RF-04: solo anestesiólogo o perfusionista)
+        boolean rolAutorizado = "ANESTESIOLOGO".equals(peticion.rol()) ||
+                                "PERFUSIONISTA".equals(peticion.rol());
+        if (!rolAutorizado) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new CambioFaseRespuesta(false, "ROL_NO_AUTORIZADO", "Solo anestesiólogo o perfusionista pueden cambiar fase"));
+        }
+
+        // Validar transición de fase válida
+        boolean transicionValida = validarTransicionFase(peticion.faseNueva());
+        if (!transicionValida) {
+            return ResponseEntity.badRequest()
+                    .body(new CambioFaseRespuesta(false, "TRANSICION_INVALIDA", "Transición de fase no permitida"));
+        }
+
+        // En implementación real: persistir cambio de fase + auditoría
+        return ResponseEntity.ok(new CambioFaseRespuesta(true, "FASE_ACTUALIZADA", "Fase cambiada a " + peticion.faseNueva()));
+    }
+
+    private boolean validarTransicionFase(String faseNueva) {
+        // Fases válidas: PREOPERATORIO, INDUCCION, MANTENIMIENTO, CIRCULACION, POSTOPERATORIO
+        return "INDUCCION".equals(faseNueva) || "MANTENIMIENTO".equals(faseNueva) ||
+               "CIRCULACION".equals(faseNueva) || "POSTOPERATORIO".equals(faseNueva);
     }
 
     // Pacientes (RF-04, RF-05)
@@ -153,4 +198,10 @@ public class CardioVigiaController {
     public record HceEstadoRespuesta(String cirugiaId, boolean auditado, String estadoEnvio) {}
     public record UmbralesPeticion(double umbralAlto, double umbralCritico, boolean cirugiaActiva) {}
     public record UmbralesRespuesta(boolean actualizado, String resultado) {}
+
+    // DTOs para Pacientes y Fases (RF-04, RF-05)
+    public record PacientePeticion(String pacienteId, int edad, boolean perfilCompleto) {}
+    public record PacienteRespuesta(String pacienteId, String estado) {}
+    public record CambioFasePeticion(String faseNueva, String rol) {}
+    public record CambioFaseRespuesta(boolean exitoso, String codigo, String mensaje) {}
 }
