@@ -10,7 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CardioVigiaSeleniumTest {
@@ -35,7 +35,18 @@ class CardioVigiaSeleniumTest {
         driver.findElement(By.id("fc")).clear();
         driver.findElement(By.id("fc")).sendKeys("75");
         driver.findElement(By.id("btnValidar")).click();
-        assertTrue(driver.getPageSource().contains("Signos Válidos"));
+        assertEquals("Signos Válidos (Canal Confiable)",
+                driver.findElement(By.id("resultadoValidacion")).getText());
+    }
+
+    @Test
+    void testRechazaSignosVitalesFueraDeRangoWeb() {
+        driver.get("http://localhost:" + port);
+        driver.findElement(By.id("fc")).clear();
+        driver.findElement(By.id("fc")).sendKeys("301");
+        driver.findElement(By.id("btnValidar")).click();
+        assertEquals("Signos Inválidos (Descarte por Ruido)",
+                driver.findElement(By.id("resultadoValidacion")).getText());
     }
 
     @Test
@@ -44,7 +55,18 @@ class CardioVigiaSeleniumTest {
         driver.findElement(By.id("probabilidad")).clear();
         driver.findElement(By.id("probabilidad")).sendKeys("85");
         driver.findElement(By.id("btnEvaluarRiesgo")).click();
-        assertTrue(driver.getPageSource().contains("CRITICO"));
+        assertEquals("Nivel de Riesgo: CRITICO - Alerta Sonora Dual Emitida",
+                driver.findElement(By.id("resultadoRiesgo")).getText());
+    }
+
+    @Test
+    void testRechazaProbabilidadFueraDeRangoWeb() {
+        driver.get("http://localhost:" + port);
+        driver.findElement(By.id("probabilidad")).clear();
+        driver.findElement(By.id("probabilidad")).sendKeys("101");
+        driver.findElement(By.id("btnEvaluarRiesgo")).click();
+        assertEquals("Probabilidad Inválida (debe estar entre 0 y 100)",
+                driver.findElement(By.id("resultadoRiesgo")).getText());
     }
 
     @AfterEach
