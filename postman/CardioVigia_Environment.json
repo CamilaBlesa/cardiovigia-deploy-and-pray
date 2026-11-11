@@ -1,0 +1,10 @@
+{
+  "name": "CardioVigia Local",
+  "values": [
+    { "key": "baseUrl", "value": "http://localhost:8080/api", "enabled": true },
+    { "key": "actuatorUrl", "value": "http://localhost:8080", "enabled": true },
+    { "key": "pacienteId", "value": "P-001", "enabled": true },
+    { "key": "cirugiaId", "value": "C-001", "enabled": true }
+  ],
+  "_postman_variable_scope": "environment"
+}
