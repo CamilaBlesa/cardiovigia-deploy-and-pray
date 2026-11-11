@@ -1,0 +1,19 @@
+# ==============================================================================
+# MODELO DE COMBINATORIA PAIRWISE - MICROSOFT PICT
+# Proyecto: CardioVigia v2.4.0 - Monitoreo de Cirugías Cardíacas con IA
+# Cátedra: Verificación y Validación de Software (ECyT - UNSAM)
+# Equipo: Deploy & Pray
+# Requisitos asociados: RF-04, RF-05 y RF-11
+# ==============================================================================
+
+# 1. Rango de Edad del Paciente (Criterio de elegibilidad para IA - RF-05)
+Edad: Menor_18, Adulto_18_90, Mayor_90
+
+# 2. Estado del Perfil Clínico / Parámetros Basales (RF-05)
+PerfilClinico: Completo, Incompleto
+
+# 3. Fase Quirúrgica Activa (RF-04)
+FaseQuirurgica: Preoperatorio, Intraoperatorio, Postoperatorio
+
+# 4. Rol del Profesional Médico Responsable (RF-04 y RF-11)
+RolUsuario: Anestesiologo, Cirujano, Perfusionista
