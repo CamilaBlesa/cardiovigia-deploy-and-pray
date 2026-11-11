@@ -27,7 +27,6 @@ public class CardioVigiaStepDefinitions {
     private boolean perfilCompleto;
     private boolean pacienteElegible;
     private String faseActual;
-    private String faseNueva;
     private String rolUsuario;
     private String resultadoTransicion;
     private String registroAuditoria;
@@ -41,7 +40,6 @@ public class CardioVigiaStepDefinitions {
 
     // RF-07: Supresión de alertas
     private String nivelAlertaAnterior;
-    private String nivelAlertaActual;
     private int segundosDesdeUltimaAlerta;
     private boolean alertaSuprimida;
 
@@ -62,14 +60,12 @@ public class CardioVigiaStepDefinitions {
     private String causaDegradado;
 
     // RF-10: HCE
-    private String idCirugiaHCE;
     private int intentoHCE;
     private boolean entregaExitosa;
     private boolean datosPerdidos;
     private int registrosAuditoria;
 
     // RF-11: Límites de umbrales
-    private String tipoUmbral;
     private int valorUmbral;
     private String resultadoUmbral;
 
@@ -197,7 +193,6 @@ public class CardioVigiaStepDefinitions {
 
     @When("el usuario solicita cambiar la fase quirurgica a {string}")
     public void elUsuarioSolicitaCambiarLaFaseQuirurgicaA(String faseNueva) {
-        this.faseNueva = faseNueva;
         boolean transicionValida = validarTransicionFase(faseActual, faseNueva, rolUsuario);
         this.resultadoTransicion = transicionValida ? "permitida" : "denegada";
         this.registroAuditoria = String.format("Cambio de fase: %s -> %s por %s", faseActual, faseNueva, rolUsuario);
@@ -299,8 +294,8 @@ public class CardioVigiaStepDefinitions {
 
     @When("se evalua una nueva alerta de nivel {string}")
     public void seEvaluaUnaNuevaAlertaDeNivel(String nivelActual) {
-        this.nivelAlertaActual = nivelActual;
-        this.alertaSuprimida = cardioVigia.debeSuprimirAlerta(nivelAlertaAnterior, nivelAlertaActual, segundosDesdeUltimaAlerta);
+        this.alertaSuprimida = cardioVigia.debeSuprimirAlerta(
+            nivelAlertaAnterior, nivelActual, segundosDesdeUltimaAlerta);
     }
 
     @Then("la alerta se suprime")
@@ -419,7 +414,6 @@ public class CardioVigiaStepDefinitions {
     // RF-10: HCE - Scenario simple
     @Given("una cirugia finalizada exitosamente con ID {string}")
     public void unaCirugiaFinalizadaExitosamenteConID(String id) {
-        this.idCirugiaHCE = id;
     }
 
     @Given("los registros y alertas guardados en la base de datos")
@@ -446,7 +440,6 @@ public class CardioVigiaStepDefinitions {
     // RF-10: Reintentos HCE
     @Given("una cirugia finalizada con ID {string}")
     public void unaCirugiaFinalizadaConID(String id) {
-        this.idCirugiaHCE = id;
     }
 
     @Given("la HCE responde con {string} en el intento {int}")
@@ -499,7 +492,6 @@ public class CardioVigiaStepDefinitions {
 
     @When("intenta modificar el umbral {string} a {string}")
     public void intentaModificarElUmbralA(String tipo, String valorStr) {
-        this.tipoUmbral = tipo;
         this.valorUmbral = Integer.parseInt(valorStr);
 
         // RF-11 bloqueo en cirugía activa
@@ -508,29 +500,24 @@ public class CardioVigiaStepDefinitions {
         } else if ("ADMINISTRADOR_TECNICO".equals(rolUsuario)) {
             this.resultadoUmbral = "PENDIENTE_SEGUNDO_ROL";
         } else {
-            // Validar límites de umbral
-            if ("ALTO".equals(tipo)) {
-                this.resultadoUmbral = (valorUmbral >= 40 && valorUmbral <= 60) ? "ACEPTADO" : "RECHAZADO";
-            } else if ("CRITICO".equals(tipo)) {
-                this.resultadoUmbral = (valorUmbral >= 70) ? "ACEPTADO" : "RECHAZADO";
-            } else {
-                this.resultadoUmbral = "RECHAZADO";
-            }
+            this.resultadoUmbral = evaluarLimiteUmbral(tipo);
         }
     }
 
     @When("intenta establecer el umbral {string} a {string}")
     public void intentaEstablecerElUmbralA(String tipo, String valorStr) {
-        this.tipoUmbral = tipo;
         this.valorUmbral = Integer.parseInt(valorStr);
+        this.resultadoUmbral = evaluarLimiteUmbral(tipo);
+    }
 
+    private String evaluarLimiteUmbral(String tipo) {
         if ("ALTO".equals(tipo)) {
-            this.resultadoUmbral = (valorUmbral >= 40 && valorUmbral <= 60) ? "ACEPTADO" : "RECHAZADO";
-        } else if ("CRITICO".equals(tipo)) {
-            this.resultadoUmbral = (valorUmbral >= 70) ? "ACEPTADO" : "RECHAZADO";
-        } else {
-            this.resultadoUmbral = "RECHAZADO";
+            return valorUmbral >= 40 && valorUmbral <= 60 ? "ACEPTADO" : "RECHAZADO";
         }
+        if ("CRITICO".equals(tipo)) {
+            return valorUmbral >= 70 ? "ACEPTADO" : "RECHAZADO";
+        }
+        return "RECHAZADO";
     }
 
     @Then("la accion es {string}")
