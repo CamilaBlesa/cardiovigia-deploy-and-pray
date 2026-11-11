@@ -167,8 +167,12 @@ PICT o con [`docs/pairwise/pict.exe`](docs/pairwise/pict.exe) en Windows.
 | Cobertura / JaCoCo | Implementada | `./mvnw clean test` |
 | Mutación / PIT | Implementada | Comando de PIT anterior |
 | Pairwise / PICT | Documentada, ejecución manual | `docs/pairwise/` |
+| Rendimiento/carga | Ejecutada de forma puntual | `resultados/pacientesSimultaneos.csv` |
 
 ## Trazabilidad de pruebas
+
+La matriz completa de requisitos, casos, artefactos, ejecución y hallazgos está
+en [`docs/matriz-trazabilidad.md`](docs/matriz-trazabilidad.md).
 
 Los artefactos de prueba utilizan identificadores con el formato
 `RF-xx Caso de prueba: xx`. `RF-xx` identifica el requisito funcional y el
@@ -195,3 +199,4 @@ escenarios Cucumber mantienen además las etiquetas
 
 - JaCoCo: `target/site/jacoco/index.html`
 - PIT: `target/pit-reports/index.html`
+- Rendimiento/carga: [`resultados/pacientesSimultaneos.csv`](resultados/pacientesSimultaneos.csv)
