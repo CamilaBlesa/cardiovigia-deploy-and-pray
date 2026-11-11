@@ -1,0 +1,948 @@
+{
+  "info": {
+    "_postman_id": "dae27a09-cbd8-4d24-a130-5e6aaf793e23",
+    "name": "CardioVigia API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58158290"
+  },
+  "item": [
+    {
+      "name": "HealthCheck",
+      "item": [
+        {
+          "name": "Actuator Health",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"Status UP\", () => pm.expect(pm.response.json().status).to.eql(\"UP\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{actuatorUrl}}/health",
+              "host": [
+                "{{actuatorUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Signos Vitales (RF-01, RF-02)",
+      "item": [
+        {
+          "name": "Camino Feliz",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"todoValido true\", () => pm.expect(pm.response.json().todoValido).to.be.true);\npm.test(\"canalConfiable true\", () => pm.expect(pm.response.json().canalConfiable).to.be.true);\npm.test(\"frecuenciaCardiacaValida true\", () => pm.expect(pm.response.json().frecuenciaCardiacaValida).to.be.true);\npm.test(\"presionMediaValida true\", () => pm.expect(pm.response.json().presionMediaValida).to.be.true);\npm.test(\"saturacionValida true\", () => pm.expect(pm.response.json().saturacionValida).to.be.true);\npm.test(\"temperaturaValida true\", () => pm.expect(pm.response.json().temperaturaValida).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"frecuenciaCardiaca\": 75,\n  \"presionArterialMedia\": 85,\n  \"saturacionOxigeno\": 98,\n  \"temperatura\": 36.5,\n  \"segundosSinSenal\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/signos-vitales/validar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "signos-vitales",
+                "validar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "FC Fuera de Rango",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));\npm.test(\"todoValido false\", () => pm.expect(pm.response.json().todoValido).to.be.false);\npm.test(\"frecuenciaCardiacaValida false\", () => pm.expect(pm.response.json().frecuenciaCardiacaValida).to.be.false);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"frecuenciaCardiaca\": 350,\n  \"presionArterialMedia\": 85,\n  \"saturacionOxigeno\": 98,\n  \"temperatura\": 36.5,\n  \"segundosSinSenal\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/signos-vitales/validar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "signos-vitales",
+                "validar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "SpO2 Fuera de Rango",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));\npm.test(\"saturacionValida false\", () => pm.expect(pm.response.json().saturacionValida).to.be.false);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"frecuenciaCardiaca\": 75,\n  \"presionArterialMedia\": 85,\n  \"saturacionOxigeno\": 101,\n  \"temperatura\": 36.5,\n  \"segundosSinSenal\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/signos-vitales/validar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "signos-vitales",
+                "validar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Señal No Confiable >15s",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));\npm.test(\"canalConfiable false\", () => pm.expect(pm.response.json().canalConfiable).to.be.false);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"frecuenciaCardiaca\": 75,\n  \"presionArterialMedia\": 85,\n  \"saturacionOxigeno\": 98,\n  \"temperatura\": 36.5,\n  \"segundosSinSenal\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/signos-vitales/validar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "signos-vitales",
+                "validar"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Pacientes (RF-04, RF-05)",
+      "item": [
+        {
+          "name": "POST Elegibilidad - Elegible",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"elegible true\", () => pm.expect(pm.response.json().elegible).to.be.true);\npm.test(\"estado ELEGIBLE\", () => pm.expect(pm.response.json().estado).to.eql(\"ELEGIBLE\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"edad\": 45,\n  \"perfilCompleto\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pacientes/elegibilidad",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "elegibilidad"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Elegibilidad - Menor de 18",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));\npm.test(\"elegible false\", () => pm.expect(pm.response.json().elegible).to.be.false);\npm.test(\"estado EXCLUIDO\", () => pm.expect(pm.response.json().estado).to.eql(\"EXCLUIDO\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"edad\": 17,\n  \"perfilCompleto\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pacientes/elegibilidad",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "elegibilidad"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Elegibilidad - Perfil Incompleto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));\npm.test(\"elegible false\", () => pm.expect(pm.response.json().elegible).to.be.false);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"edad\": 45,\n  \"perfilCompleto\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pacientes/elegibilidad",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "elegibilidad"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Elegibilidad - Mayor de 90",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));\npm.test(\"elegible false\", () => pm.expect(pm.response.json().elegible).to.be.false);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"edad\": 91,\n  \"perfilCompleto\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pacientes/elegibilidad",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "elegibilidad"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AlertasYEscalamiento (RF-06, RF-07, RF-08)",
+      "item": [
+        {
+          "name": "Clasificar Riesgo - CRITICO (>=80%)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"nivel CRITICO\", () => pm.expect(pm.response.json().nivel).to.eql(\"CRITICO\"));\npm.test(\"notificacion ALERTA_SONORA\", () => pm.expect(pm.response.json().notificacion).to.eql(\"ALERTA_SONORA_ANESTESIOLOGO_Y_CIRUJANO\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"probabilidad\": 85.0\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/evaluar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "evaluar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Clasificar Riesgo - ALTO (50-80%)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"nivel ALTO\", () => pm.expect(pm.response.json().nivel).to.eql(\"ALTO\"));",
+                  "pm.test(\"notificacion ALERTA_ANESTESIOLOGO\", () => pm.expect(pm.response.json().notificacion).to.eql(\"ALERTA_ANESTESIOLOGO\"));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"probabilidad\": 65.0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/evaluar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "evaluar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Clasificar Riesgo - MODERADO (20-50%)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"nivel MODERADO\", () => pm.expect(pm.response.json().nivel).to.eql(\"MODERADO\"));",
+                  "pm.test(\"notificacion INDICACION_VISUAL\", () => pm.expect(pm.response.json().notificacion).to.eql(\"INDICACION_VISUAL\"));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"probabilidad\": 35.0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/evaluar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "evaluar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Clasificar Riesgo - BAJO (<20%)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"nivel BAJO\", () => pm.expect(pm.response.json().nivel).to.eql(\"BAJO\"));",
+                  "pm.test(\"notificacion NINGUNA\", () => pm.expect(pm.response.json().notificacion).to.eql(\"NINGUNA\"));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"probabilidad\": 15.0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/evaluar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "evaluar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Clasificar Riesgo - Probabilidad Inválida",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));\npm.test(\"nivel ERROR\", () => pm.expect(pm.response.json().nivel).to.eql(\"ERROR\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"probabilidad\": 150.0\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/evaluar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "evaluar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Escalamiento - CRITICO 35s (COORDINADOR_UCI)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"destinatario COORDINADOR_UCI\", () => pm.expect(pm.response.json().destinatario).to.eql(\"COORDINADOR_UCI\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nivel\": \"CRITICO\",\n  \"segundosSinReconocer\": 35\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/escalamiento",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "escalamiento"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Escalamiento - CRITICO 25s (NO_ESCALA)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"destinatario NO_ESCALA\", () => pm.expect(pm.response.json().destinatario).to.eql(\"NO_ESCALA\"));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nivel\": \"CRITICO\",\n  \"segundosSinReconocer\": 25\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/escalamiento",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "escalamiento"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Escalamiento - ALTO 65s (CIRUJANO)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"destinatario CIRUJANO\", () => pm.expect(pm.response.json().destinatario).to.eql(\"CIRUJANO\"));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nivel\": \"ALTO\",\n  \"segundosSinReconocer\": 65\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/escalamiento",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "escalamiento"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Escalamiento - ALTO 55s (NO_ESCALA)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"destinatario NO_ESCALA\", () => pm.expect(pm.response.json().destinatario).to.eql(\"NO_ESCALA\"));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nivel\": \"ALTO\",\n  \"segundosSinReconocer\": 55\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/escalamiento",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "escalamiento"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Escalamiento - MODERADO (NO_ESCALA siempre)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"destinatario NO_ESCALA\", () => pm.expect(pm.response.json().destinatario).to.eql(\"NO_ESCALA\"));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nivel\": \"MODERADO\",\n  \"segundosSinReconocer\": 120\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/escalamiento",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "escalamiento"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04_ModoDegradado (RF-09)",
+      "item": [
+        {
+          "name": "Modo Degradado - Activo por Señal >10s",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"modoDegradadoActivo true\", () => pm.expect(pm.response.json().modoDegradadoActivo).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"segundosSinSenal\": 12,\n  \"fallaIA\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/modo-degradado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "modo-degradado"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modo Degradado - Activo por Falla IA",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"modoDegradadoActivo true\", () => pm.expect(pm.response.json().modoDegradadoActivo).to.be.true);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"segundosSinSenal\": 0,\n  \"fallaIA\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/modo-degradado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "modo-degradado"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modo Degradado - Normal",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"modoDegradadoActivo false\", () => pm.expect(pm.response.json().modoDegradadoActivo).to.be.false);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"segundosSinSenal\": 5,\n  \"fallaIA\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/modo-degradado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "modo-degradado"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api"
+    },
+    {
+      "key": "pacienteId",
+      "value": "P-001"
+    },
+    {
+      "key": "cirugiaId",
+      "value": "C-001"
+    }
+  ]
+}
