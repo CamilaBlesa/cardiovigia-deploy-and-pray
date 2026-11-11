@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>CardioVigía v2.4.0 - Panel de Monitoreo Quirúrgico</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; margin: 0; padding: 20px; background-color: #f0f4f8; }
+        .container { max-width: 650px; margin: 0 auto; background: white; border-radius: 10px; padding: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.07); }
+        h1 { color: #1a365d; margin-top: 0; }
+        .subtitle { color: #718096; margin-bottom: 25px; font-size: 14px; }
+        .section { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
+        label { display: block; font-weight: 600; color: #2d3748; margin-top: 12px; }
+        input { width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; margin-top: 5px; font-size: 14px; }
+        button { background-color: #2b6cb0; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; margin-top: 15px; }
+        button:hover { background-color: #2c5282; }
+        .badge { margin-top: 15px; padding: 12px; border-radius: 6px; font-weight: bold; }
+        .ok { background-color: #c6f6d5; color: #22543d; border: 1px solid #9ae6b4; }
+        .danger { background-color: #fed7d7; color: #742a2a; border: 1px solid #feb2b2; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CardioVigía v2.4.0</h1>
+        <div class="subtitle">Instituto Cardiovascular del Plata (ICP) — Monitoreo de Cirugías Cardíacas</div>
+
+        <div class="section">
+            <h3>1. Validación de Telemetría (RF-01 / RF-02)</h3>
+            <label for="fc">Frecuencia Cardíaca (lpm):</label>
+            <input type="number" id="fc" value="75">
+
+            <label for="pam">Presión Arterial Media (mmHg):</label>
+            <input type="number" id="pam" value="85">
+
+            <button id="btnValidar" onclick="validar()">Validar Signos Vitales</button>
+            <div id="resultadoValidacion" class="badge ok">Signos Válidos (Canal Confiable)</div>
+        </div>
+
+        <div class="section" style="border-bottom: none;">
+            <h3>2. Clasificación de Riesgo IA (RF-06 / RF-07)</h3>
+            <label for="probabilidad">Probabilidad de Complicación Hemodinámica (%):</label>
+            <input type="number" id="probabilidad" value="85">
+
+            <button id="btnEvaluarRiesgo" onclick="evaluar()">Evaluar Riesgo en Vivo</button>
+            <div id="resultadoRiesgo" class="badge danger">Nivel de Riesgo: CRITICO - Alerta Sonora Dual Emitida</div>
+        </div>
+    </div>
+
+    <script>
+        function validar() {
+            var fc = parseInt(document.getElementById('fc').value);
+            var pam = parseInt(document.getElementById('pam').value);
+            var div = document.getElementById('resultadoValidacion');
+            if (fc >= 0 && fc <= 300 && pam >= 20 && pam <= 200) {
+                div.className = "badge ok";
+                div.innerText = "Signos Válidos (Canal Confiable)";
+            } else {
+                div.className = "badge danger";
+                div.innerText = "Signos Inválidos (Descarte por Ruido)";
+            }
+        }
+
+        function evaluar() {
+            var p = parseFloat(document.getElementById('probabilidad').value);
+            var div = document.getElementById('resultadoRiesgo');
+            if (p >= 80) {
+                div.className = "badge danger";
+                div.innerText = "Nivel de Riesgo: CRITICO - Alerta Sonora Dual Emitida";
+            } else if (p >= 50) {
+                div.className = "badge danger";
+                div.innerText = "Nivel de Riesgo: ALTO - Alerta Anestesiólogo";
+            } else if (p >= 20) {
+                div.className = "badge ok";
+                div.innerText = "Nivel de Riesgo: MODERADO - Indicación Visual";
+            } else {
+                div.className = "badge ok";
+                div.innerText = "Nivel de Riesgo: BAJO - Monitoreo Normal";
+            }
+        }
+    </script>
+</body>
+</html>
