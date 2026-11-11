@@ -1,30 +1,72 @@
 {
   "info": {
-    "name": "CardioVigia API Tests - Minimal Complete",
+    "_postman_id": "134719f2-7b49-457c-bec0-4db428bc60a5",
+    "name": "CardioVigia API Tests",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_postman_id": "cardiovigia-minimal-v2"
+    "_exporter_id": "58158290"
   },
-  "variable": [
-    { "key": "baseUrl", "value": "http://localhost:8080/api" },
-    { "key": "actuatorUrl", "value": "http://localhost:8080" },
-    { "key": "pacienteId", "value": "P-001" },
-    { "key": "cirugiaId", "value": "C-001" },
-    { "key": "tokenAnestesista", "value": "" },
-    { "key": "tokenCirujano", "value": "" }
-  ],
   "item": [
     {
       "name": "00_HealthCheck",
       "item": [
         {
           "name": "Actuator Health",
-          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"Status UP\", () => pm.expect(pm.response.json().status).to.eql(\"UP\"));"] } }],
-          "request": { "method": "GET", "header": [], "url": { "raw": "{{actuatorUrl}}/actuator/health", "host": ["{{actuatorUrl}}"], "path": ["actuator", "health"] } }
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"Status UP\", () => pm.expect(pm.response.json().status).to.eql(\"UP\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{actuatorUrl}}/health",
+              "host": [
+                "{{actuatorUrl}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "App Health",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"Sistema CardioVigia\", () => pm.expect(pm.response.json().sistema).to.eql(\"CardioVigia\"));", "pm.test(\"Version 2.4.0\", () => pm.expect(pm.response.json().version).to.eql(\"2.4.0\"));", "pm.test(\"Estado OPERATIVO\", () => pm.expect(pm.response.json().estado).to.eql(\"OPERATIVO\"));"] } }],
-          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/salud", "host": ["{{baseUrl}}"], "path": ["salud"] } }
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Sistema CardioVigia\", () => pm.expect(pm.response.json().sistema).to.eql(\"CardioVigia\"));",
+                  "pm.test(\"Version 2.4.0\", () => pm.expect(pm.response.json().version).to.eql(\"2.4.0\"));",
+                  "pm.test(\"Estado OPERATIVO\", () => pm.expect(pm.response.json().estado).to.eql(\"OPERATIVO\"));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/salud",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "salud"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -32,14 +74,96 @@
       "name": "01_SignosVitales (RF-01, RF-02)",
       "item": [
         {
-          "name": "Camino Feliz",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"todoValido true\", () => pm.expect(pm.response.json().todoValido).to.be.true);", "pm.test(\"canalConfiable true\", () => pm.expect(pm.response.json().canalConfiable).to.be.true);", "pm.test(\"frecuenciaCardiacaValida true\", () => pm.expect(pm.response.json().frecuenciaCardiacaValida).to.be.true);", "pm.test(\"presionMediaValida true\", () => pm.expect(pm.response.json().presionMediaValida).to_be.true);", "pm.test(\"saturacionValida true\", () => pm.expect(pm.response.json().saturacionValida).to.be.true);", "pm.test(\"temperaturaValida true\", () => pm.expect(pm.response.json().temperaturaValida).to.be.true);"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"frecuenciaCardiaca\": 75,\n  \"presionArterialMedia\": 85,\n  \"saturacionOxigeno\": 98,\n  \"temperatura\": 36.5,\n  \"segundosSinSenal\": 0\n}" }, "url": { "raw": "{{baseUrl}}/signos-vitales/validar", "host": ["{{baseUrl}}"], "path": ["signos-vitales", "validar"] } }
+          "name": "Camino Feliz - Todo valido (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"todoValido true\", () => pm.expect(pm.response.json().todoValido).to.be.true);",
+                  "pm.test(\"canalConfiable true\", () => pm.expect(pm.response.json().canalConfiable).to.be.true);",
+                  "pm.test(\"frecuenciaCardiacaValida true\", () => pm.expect(pm.response.json().frecuenciaCardiacaValida).to.be.true);",
+                  "pm.test(\"presionMediaValida true\", () => pm.expect(pm.response.json().presionMediaValida).to.be.true);",
+                  "pm.test(\"saturacionValida true\", () => pm.expect(pm.response.json().saturacionValida).to.be.true);",
+                  "pm.test(\"temperaturaValida true\", () => pm.expect(pm.response.json().temperaturaValida).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"frecuenciaCardiaca\": 75,\n  \"presionArterialMedia\": 85,\n  \"saturacionOxigeno\": 98,\n  \"temperatura\": 36.5,\n  \"segundosSinSenal\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/signos-vitales/validar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "signos-vitales",
+                "validar"
+              ]
+            }
+          },
+          "response": []
         },
         {
-          "name": "FC Fuera de Rango",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));", "pm.test(\"todoValido false\", () => pm.expect(pm.response.json().todoValido).to.be.false);", "pm.test(\"frecuenciaCardiacaValida false\", () => pm.expect(pm.response.json().frecuenciaCardiacaValida).to.be.false);"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"frecuenciaCardiaca\": 350,\n  \"presionArterialMedia\": 85,\n  \"saturacionOxigeno\": 98,\n  \"temperatura\": 36.5,\n  \"segundosSinSenal\": 0\n}" }, "url": { "raw": "{{baseUrl}}/signos-vitales/validar", "host": ["{{baseUrl}}"], "path": ["signos-vitales", "validar"] } }
+          "name": "FC Fuera de Rango (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));\npm.test(\"todoValido false\", () => pm.expect(pm.response.json().todoValido).to.be.false);\npm.test(\"frecuenciaCardiacaValida false\", () => pm.expect(pm.response.json().frecuenciaCardiacaValida).to.be.false);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"pacienteId\": \"P-001\",\n    \"frecuenciaCardiaca\": 350,\n    \"presionArterialMedia\": 85,\n    \"saturacionOxigeno\": 98,\n    \"temperatura\": 36.5,\n    \"segundosSinSenal\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/signos-vitales/validar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "signos-vitales",
+                "validar"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -47,14 +171,76 @@
       "name": "02_CalidadSenal (RF-03)",
       "item": [
         {
-          "name": "GET Canal Confiable",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"estado CONFIABLE\", () => pm.expect(pm.response.json().estado).to.eql(\"CONFIABLE\"));"] } }],
-          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/calidad-senal/CANAL-1", "host": ["{{baseUrl}}"], "path": ["calidad-senal", "CANAL-1"] } }
+          "name": "Canal Confiable (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"estado CONFIABLE\", () => pm.expect(pm.response.json().estado).to.eql(\"CONFIABLE\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/calidad-senal/CANAL-1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "calidad-senal",
+                "CANAL-1"
+              ]
+            }
+          },
+          "response": []
         },
         {
-          "name": "Señal Perdida >15s",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));", "pm.test(\"canalConfiable false\", () => pm.expect(pm.response.json().canalConfiable).to.be.false);"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"frecuenciaCardiaca\": 75,\n  \"presionArterialMedia\": 85,\n  \"saturacionOxigeno\": 98,\n  \"temperatura\": 36.5,\n  \"segundosSinSenal\": 20\n}" }, "url": { "raw": "{{baseUrl}}/signos-vitales/validar", "host": ["{{baseUrl}}"], "path": ["signos-vitales", "validar"] } }
+          "name": "Señal Perdida >15s (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));\npm.test(\"canalConfiable false\", () => pm.expect(pm.response.json().canalConfiable).to.be.false);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"frecuenciaCardiaca\": 75,\n  \"presionArterialMedia\": 85,\n  \"saturacionOxigeno\": 98,\n  \"temperatura\": 36.5,\n  \"segundosSinSenal\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/signos-vitales/validar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "signos-vitales",
+                "validar"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -62,14 +248,90 @@
       "name": "03_Pacientes (RF-04, RF-05)",
       "item": [
         {
-          "name": "POST Elegible - Adulto 45 años",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"elegible true\", () => pm.expect(pm.response.json().elegible).to.be.true);", "pm.test(\"estado ELEGIBLE\", () => pm.expect(pm.response.json().estado).to.eql(\"ELEGIBLE\"));"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"edad\": 45,\n  \"perfilCompleto\": true\n}" }, "url": { "raw": "{{baseUrl}}/pacientes/elegibilidad", "host": ["{{baseUrl}}"], "path": ["pacientes", "elegibilidad"] } }
+          "name": "Elegibilidad - Adulto 45 años (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"elegible true\", () => pm.expect(pm.response.json().elegible).to.be.true);\npm.test(\"estado ELEGIBLE\", () => pm.expect(pm.response.json().estado).to.eql(\"ELEGIBLE\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"edad\": 45,\n  \"perfilCompleto\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pacientes/elegibilidad",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "elegibilidad"
+              ]
+            }
+          },
+          "response": []
         },
         {
-          "name": "Elegibilidad - Menor 18",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));", "pm.test(\"elegible false\", () => pm.expect(pm.response.json().elegible).to.be.false);", "pm.test(\"estado EXCLUIDO\", () => pm.expect(pm.response.json().estado).to.eql(\"EXCLUIDO\"));"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"edad\": 17,\n  \"perfilCompleto\": true\n}" }, "url": { "raw": "{{baseUrl}}/pacientes/elegibilidad", "host": ["{{baseUrl}}"], "path": ["pacientes", "elegibilidad"] } }
+          "name": "Elegibilidad - Menor 18 (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));\npm.test(\"elegible false\", () => pm.expect(pm.response.json().elegible).to.be.false);\npm.test(\"estado EXCLUIDO\", () => pm.expect(pm.response.json().estado).to.eql(\"EXCLUIDO\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"edad\": 17,\n  \"perfilCompleto\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pacientes/elegibilidad",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "elegibilidad"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -77,39 +339,251 @@
       "name": "04_FasesQuirurgicas (RF-04)",
       "item": [
         {
-          "name": "POST Registrar Paciente",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));", "pm.test(\"Tiene ID\", () => pm.expect(pm.response.json()).to.have.property(\"pacienteId\"));"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"edad\": 45,\n  \"perfilCompleto\": true\n}" }, "url": { "raw": "{{baseUrl}}/pacientes", "host": ["{{baseUrl}}"], "path": ["pacientes"] } }
+          "name": "Registrar Paciente (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));\npm.test(\"Tiene ID\", () => pm.expect(pm.response.json()).to.have.property(\"pacienteId\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"edad\": 45,\n  \"perfilCompleto\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pacientes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes"
+              ]
+            }
+          },
+          "response": []
         },
         {
-          "name": "GET Consultar Paciente",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"Tiene ID\", () => pm.expect(pm.response.json()).to.have.property(\"pacienteId\"));"] } }],
-          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/pacientes/{{pacienteId}}", "host": ["{{baseUrl}}"], "path": ["pacientes", "{{pacienteId}}"] } }
+          "name": "Consultar Paciente (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"Tiene ID\", () => pm.expect(pm.response.json()).to.have.property(\"pacienteId\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pacientes/{{pacienteId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "{{pacienteId}}"
+              ]
+            }
+          },
+          "response": []
         },
         {
-          "name": "PUT Cambiar Fase - Anestesiólogo PREOP→INDUCCIÓN (200)",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"Fase actualizada\", () => pm.expect(pm.response.json().faseActual).to.eql(\"INDUCCION\"));"] } }],
-          "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"faseNueva\": \"INDUCCION\",\n  \"rol\": \"ANESTESIOLOGO\"\n}" }, "url": { "raw": "{{baseUrl}}/pacientes/{{pacienteId}}/fase", "host": ["{{baseUrl}}"], "path": ["pacientes", "{{pacienteId}}", "fase"] } }
+          "name": "Cambiar Fase - Anestesiólogo (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"Fase actualizada\", () => pm.expect(pm.response.json().codigo).to.eql(\"FASE_ACTUALIZADA\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"faseNueva\": \"INDUCCION\",\n  \"rol\": \"ANESTESIOLOGO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pacientes/{{pacienteId}}/fase",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "{{pacienteId}}",
+                "fase"
+              ]
+            }
+          },
+          "response": []
         },
         {
-          "name": "PUT Cambiar Fase - Perfusionista MANTENIMIENTO→CIRCULACION (200)",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"Fase actualizada\", () => pm.expect(pm.response.json().faseActual).to.eql(\"CIRCULACION\"));"] } }],
-          "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"faseNueva\": \"CIRCULACION\",\n  \"rol\": \"PERFUSIONISTA\"\n}" }, "url": { "raw": "{{baseUrl}}/pacientes/{{pacienteId}}/fase", "host": ["{{baseUrl}}"], "path": ["pacientes", "{{pacienteId}}", "fase"] } }
+          "name": "Cambiar Fase - Perfusionista (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"Fase actualizada\", () => pm.expect(pm.response.json().codigo).to.eql(\"FASE_ACTUALIZADA\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"faseNueva\": \"CIRCULACION\",\n  \"rol\": \"PERFUSIONISTA\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pacientes/{{pacienteId}}/fase",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "{{pacienteId}}",
+                "fase"
+              ]
+            }
+          },
+          "response": []
         },
         {
-          "name": "PUT Cambiar Fase - Cirujano NO AUTORIZADO (403)",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));"] } }],
-          "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"faseNueva\": \"INDUCCION\",\n  \"rol\": \"CIRUJANO\"\n}" }, "url": { "raw": "{{baseUrl}}/pacientes/{{pacienteId}}/fase", "host": ["{{baseUrl}}"], "path": ["pacientes", "{{pacienteId}}", "fase"] } }
+          "name": "Cambiar Fase - Cirujano NO AUTORIZADO (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"faseNueva\": \"INDUCCION\",\n  \"rol\": \"CIRUJANO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pacientes/{{pacienteId}}/fase",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "{{pacienteId}}",
+                "fase"
+              ]
+            }
+          },
+          "response": []
         },
         {
-          "name": "PUT Cambiar Fase - Enfermero NO AUTORIZADO (403)",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));"] } }],
-          "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"faseNueva\": \"INDUCCION\",\n  \"rol\": \"ENFERMERO\"\n}" }, "url": { "raw": "{{baseUrl}}/pacientes/{{pacienteId}}/fase", "host": ["{{baseUrl}}"], "path": ["pacientes", "{{pacienteId}}", "fase"] } }
-        },
-        {
-          "name": "PUT Cambiar Fase - Transición Inválida (400)",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));"] } }],
-          "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"faseNueva\": \"CIRCULACION\",\n  \"rol\": \"ANESTESIOLOGO\"\n}" }, "url": { "raw": "{{baseUrl}}/pacientes/{{pacienteId}}/fase", "host": ["{{baseUrl}}"], "path": ["pacientes", "{{pacienteId}}", "fase"] } }
+          "name": "Cambiar Fase - Enfermero NO AUTORIZADO (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"faseNueva\": \"INDUCCION\",\n  \"rol\": \"ENFERMERO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pacientes/{{pacienteId}}/fase",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pacientes",
+                "{{pacienteId}}",
+                "fase"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -118,33 +592,261 @@
       "item": [
         {
           "name": "Clasificar Riesgo - CRITICO (>=80%)",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"nivel CRITICO\", () => pm.expect(pm.response.json().nivel).to.eql(\"CRITICO\"));", "pm.test(\"notificacion ALERTA_SONORA\", () => pm.expect(pm.response.json().notificacion).to.eql(\"ALERTA_SONORA_ANESTESIOLOGO_Y_CIRUJANO\"));"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"probabilidad\": 85.0\n}" }, "url": { "raw": "{{baseUrl}}/alertas/evaluar", "host": ["{{baseUrl}}"], "path": ["alertas", "evaluar"] } }
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"nivel CRITICO\", () => pm.expect(pm.response.json().nivel).to.eql(\"CRITICO\"));\npm.test(\"notificacion ALERTA_SONORA\", () => pm.expect(pm.response.json().notificacion).to.eql(\"ALERTA_SONORA_ANESTESIOLOGO_Y_CIRUJANO\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"probabilidad\": 85.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/evaluar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "evaluar"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Clasificar Riesgo - ALTO (50-80%)",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"nivel ALTO\", () => pm.expect(pm.response.json().nivel).to.eql(\"ALTO\"));", "pm.test(\"notificacion ALERTA_ANESTESIOLOGO\", () => pm.expect(pm.response.json().notificacion).to.eql(\"ALERTA_ANESTESIOLOGO\"));"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"probabilidad\": 65.0\n}" }, "url": { "raw": "{{baseUrl}}/alertas/evaluar", "host": ["{{baseUrl}}"], "path": ["alertas", "evaluar"] } }
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"nivel ALTO\", () => pm.expect(pm.response.json().nivel).to.eql(\"ALTO\"));\npm.test(\"notificacion ALERTA_ANESTESIOLOGO\", () => pm.expect(pm.response.json().notificacion).to.eql(\"ALERTA_ANESTESIOLOGO\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"probabilidad\": 65.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/evaluar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "evaluar"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Clasificar Riesgo - MODERADO (20-50%)",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"nivel MODERADO\", () => pm.expect(pm.response.json().nivel).to.eql(\"MODERADO\"));", "pm.test(\"notificacion INDICACION_VISUAL\", () => pm.expect(pm.response.json().notificacion).to.eql(\"INDICACION_VISUAL\"));"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"probabilidad\": 35.0\n}" }, "url": { "raw": "{{baseUrl}}/alertas/evaluar", "host": ["{{baseUrl}}"], "path": ["alertas", "evaluar"] } }
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"nivel MODERADO\", () => pm.expect(pm.response.json().nivel).to.eql(\"MODERADO\"));\npm.test(\"notificacion INDICACION_VISUAL\", () => pm.expect(pm.response.json().notificacion).to.eql(\"INDICACION_VISUAL\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"probabilidad\": 35.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/evaluar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "evaluar"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Clasificar Riesgo - BAJO (<20%)",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"nivel BAJO\", () => pm.expect(pm.response.json().nivel).to.eql(\"BAJO\"));", "pm.test(\"notificacion NINGUNA\", () => pm.expect(pm.response.json().notificacion).to.eql(\"NINGUNA\"));"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"probabilidad\": 15.0\n}" }, "url": { "raw": "{{baseUrl}}/alertas/evaluar", "host": ["{{baseUrl}}"], "path": ["alertas", "evaluar"] } }
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"nivel BAJO\", () => pm.expect(pm.response.json().nivel).to.eql(\"BAJO\"));\npm.test(\"notificacion NINGUNA\", () => pm.expect(pm.response.json().notificacion).to.eql(\"NINGUNA\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"probabilidad\": 15.0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/evaluar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "evaluar"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Escalamiento - CRITICO 35s (COORDINADOR_UCI)",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"destinatario COORDINADOR_UCI\", () => pm.expect(pm.response.json().destinatario).to.eql(\"COORDINADOR_UCI\"));"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nivel\": \"CRITICO\",\n  \"segundosSinReconocer\": 35\n}" }, "url": { "raw": "{{baseUrl}}/alertas/escalamiento", "host": ["{{baseUrl}}"], "path": ["alertas", "escalamiento"] } }
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"destinatario COORDINADOR_UCI\", () => pm.expect(pm.response.json().destinatario).to.eql(\"COORDINADOR_UCI\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nivel\": \"CRITICO\",\n  \"segundosSinReconocer\": 35\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/escalamiento",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "escalamiento"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Escalamiento - ALTO 65s (CIRUJANO)",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"destinatario CIRUJANO\", () => pm.expect(pm.response.json().destinatario).to.eql(\"CIRUJANO\"));"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nivel\": \"ALTO\",\n  \"segundosSinReconocer\": 65\n}" }, "url": { "raw": "{{baseUrl}}/alertas/escalamiento", "host": ["{{baseUrl}}"], "path": ["alertas", "escalamiento"] } }
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"destinatario CIRUJANO\", () => pm.expect(pm.response.json().destinatario).to.eql(\"CIRUJANO\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nivel\": \"ALTO\",\n  \"segundosSinReconocer\": 65\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/alertas/escalamiento",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alertas",
+                "escalamiento"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -153,13 +855,87 @@
       "item": [
         {
           "name": "Activo por Señal >10s",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"modoDegradadoActivo true\", () => pm.expect(pm.response.json().modoDegradadoActivo).to.be.true);"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"segundosSinSenal\": 12,\n  \"fallaIA\": false\n}" }, "url": { "raw": "{{baseUrl}}/modo-degradado", "host": ["{{baseUrl}}"], "path": ["modo-degradado"] } }
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"modoDegradadoActivo true\", () => pm.expect(pm.response.json().modoDegradadoActivo).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"segundosSinSenal\": 12,\n  \"fallaIA\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/modo-degradado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "modo-degradado"
+              ]
+            }
+          },
+          "response": []
         },
         {
           "name": "Modo Normal",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"modoDegradadoActivo false\", () => pm.expect(pm.response.json().modoDegradadoActivo).to.be.false);"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"segundosSinSenal\": 5,\n  \"fallaIA\": false\n}" }, "url": { "raw": "{{baseUrl}}/modo-degradado", "host": ["{{baseUrl}}"], "path": ["modo-degradado"] } }
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"modoDegradadoActivo false\", () => pm.expect(pm.response.json().modoDegradadoActivo).to.be.false);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"segundosSinSenal\": 5,\n  \"fallaIA\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/modo-degradado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "modo-degradado"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -167,14 +943,77 @@
       "name": "07_HCE (RF-10)",
       "item": [
         {
-          "name": "POST Enviar Resumen Quirúrgico",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"estado RECIBIDO_OK\", () => pm.expect(pm.response.json().estadoEnvio).to.eql(\"RECIBIDO_OK\"));", "pm.test(\"auditado true\", () => pm.expect(pm.response.json().auditado).to.be.true);"] } }],
-          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"cirugiaId\": \"{{cirugiaId}}\",\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"resumenClinico\": {}\n}" }, "url": { "raw": "{{baseUrl}}/hce/resumen", "host": ["{{baseUrl}}"], "path": ["hce", "resumen"] } }
+          "name": "Enviar Resumen Quirúrgico",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"estado RECIBIDO_OK\", () => pm.expect(pm.response.json().estadoEnvio).to.eql(\"RECIBIDO_OK\"));\npm.test(\"auditado true\", () => pm.expect(pm.response.json().auditado).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cirugiaId\": \"{{cirugiaId}}\",\n  \"pacienteId\": \"{{pacienteId}}\",\n  \"resumenClinico\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/hce/resumen",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "hce",
+                "resumen"
+              ]
+            }
+          },
+          "response": []
         },
         {
-          "name": "GET Verificar Auditoria HCE",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"auditado true\", () => pm.expect(pm.response.json().auditado).to.be.true);"] } }],
-          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/hce/estado/{{cirugiaId}}", "host": ["{{baseUrl}}"], "path": ["hce", "estado", "{{cirugiaId}}"] } }
+          "name": "Verificar Auditoria HCE",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"auditado true\", () => pm.expect(pm.response.json().auditado).to.be.true);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/hce/estado/{{cirugiaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "hce",
+                "estado",
+                "{{cirugiaId}}"
+              ]
+            }
+          },
+          "response": []
         }
       ]
     },
@@ -182,16 +1021,126 @@
       "name": "08_ConfiguracionUmbrales (RF-11)",
       "item": [
         {
-          "name": "PUT Umbrales Válido sin Cirugía (200)",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));", "pm.test(\"actualizado true\", () => pm.expect(pm.response.json().actualizado).to.be.true);", "pm.test(\"resultado ACEPTADO\", () => pm.expect(pm.response.json().resultado).to.eql(\"ACEPTADO\"));"] } }],
-          "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"umbralAlto\": 50.0,\n  \"umbralCritico\": 75.0,\n  \"cirugiaActiva\": false\n}" }, "url": { "raw": "{{baseUrl}}/config/umbrales", "host": ["{{baseUrl}}"], "path": ["config", "umbrales"] } }
+          "name": "Umbrales Válido sin Cirugía (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));\npm.test(\"actualizado true\", () => pm.expect(pm.response.json().actualizado).to.be.true);\npm.test(\"resultado ACEPTADO\", () => pm.expect(pm.response.json().resultado).to.eql(\"ACEPTADO\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"umbralAlto\": 50.0,\n  \"umbralCritico\": 75.0,\n  \"cirugiaActiva\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/config/umbrales",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "config",
+                "umbrales"
+              ]
+            }
+          },
+          "response": []
         },
         {
-          "name": "PUT Cirugía Activa - Bloqueo 409",
-          "event": [{ "listen": "test", "script": { "exec": ["pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));", "pm.test(\"resultado BLOQUEADO_EN_CIRUGIA\", () => pm.expect(pm.response.json().resultado).to.eql(\"BLOQUEADO_EN_CIRUGIA\"));"] } }],
-          "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"umbralAlto\": 50.0,\n  \"umbralCritico\": 75.0,\n  \"cirugiaActiva\": true\n}" }, "url": { "raw": "{{baseUrl}}/config/umbrales", "host": ["{{baseUrl}}"], "path": ["config", "umbrales"] } }
+          "name": "Cirugía Activa - Bloqueo 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));\npm.test(\"resultado BLOQUEADO_EN_CIRUGIA\", () => pm.expect(pm.response.json().resultado).to.eql(\"BLOQUEADO_EN_CIRUGIA\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"umbralAlto\": 50.0,\n  \"umbralCritico\": 75.0,\n  \"cirugiaActiva\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/config/umbrales",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "config",
+                "umbrales"
+              ]
+            }
+          },
+          "response": []
         }
       ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api"
+    },
+    {
+      "key": "actuatorUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "pacienteId",
+      "value": "P-001"
+    },
+    {
+      "key": "cirugiaId",
+      "value": "C-001"
+    },
+    {
+      "key": "tokenAnestesista",
+      "value": ""
+    },
+    {
+      "key": "tokenCirujano",
+      "value": ""
+    },
+    {
+      "key": "rol",
+      "value": "ANESTESIOLOGO"
+    },
+    {
+      "key": "token",
+      "value": ""
     }
   ]
 }
