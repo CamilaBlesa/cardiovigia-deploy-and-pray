@@ -18,6 +18,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Pruebas de contrato HTTP del controller.
+ *
+ * Cada método identifica su caso de prueba CT y requisito RF en el comentario
+ * asociado. MockMvc permite validar rutas, códigos HTTP y cuerpos JSON sin
+ * iniciar un servidor externo; CardioVigia se reemplaza por un mock para
+ * aislar el módulo web de la lógica de dominio.
+ */
 @ExtendWith(MockitoExtension.class)
 class CardioVigiaControllerTest {
 
@@ -34,6 +42,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-00 Caso de prueba: 01. Verifica que el health check publique el estado operativo.
     void obtieneEstadoSalud() throws Exception {
         mockMvc.perform(get("/api/salud"))
                 .andExpect(status().isOk())
@@ -42,6 +51,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-01/RF-02 Caso de prueba: 01. Acepta signos vitales y canal confiable.
     void validaSignosVitalesValidos() throws Exception {
         when(cardioVigia.validarFrecuenciaCardiaca(75)).thenReturn(true);
         when(cardioVigia.validarPresionArterialMedia(85)).thenReturn(true);
@@ -66,6 +76,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-01/RF-02 Caso de prueba: 02. Rechaza signos vitales cuando falla una validación.
     void rechazaSignosVitalesInvalidos() throws Exception {
         when(cardioVigia.validarFrecuenciaCardiaca(301)).thenReturn(false);
         when(cardioVigia.validarPresionArterialMedia(85)).thenReturn(true);
@@ -91,6 +102,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-01/RF-02 Caso de prueba: 03. Cubre valores válidos en los extremos definidos.
     void aceptaSignosVitalesEnLimitesInferiorYSuperior() throws Exception {
         when(cardioVigia.validarFrecuenciaCardiaca(0)).thenReturn(true);
         when(cardioVigia.validarPresionArterialMedia(20)).thenReturn(true);
@@ -115,6 +127,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-01/RF-02 Caso de prueba: 04. Cubre valores inmediatamente fuera de los límites.
     void rechazaSignosVitalesApenasFueraDeLosLimites() throws Exception {
         when(cardioVigia.validarFrecuenciaCardiaca(-1)).thenReturn(false);
         when(cardioVigia.validarPresionArterialMedia(201)).thenReturn(false);
@@ -140,6 +153,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-04 Caso de prueba: 01. Rechaza cambio de fase con rol no autorizado.
     void rechazaCambioDeFasePorRolNoAutorizado() throws Exception {
         mockMvc.perform(put("/api/pacientes/P-001/fase")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -151,6 +165,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-04 Caso de prueba: 02. Rechaza una transición de fase inexistente.
     void rechazaCambioDeFaseInvalido() throws Exception {
         mockMvc.perform(put("/api/pacientes/P-001/fase")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -162,6 +177,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-04 Caso de prueba: 03. Acepta transición válida con rol autorizado.
     void actualizaFaseConRolAutorizado() throws Exception {
         mockMvc.perform(put("/api/pacientes/P-001/fase")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -174,6 +190,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-03 Caso de prueba: 01. Devuelve el estado del canal solicitado.
     void obtieneCalidadDeSenal() throws Exception {
         mockMvc.perform(get("/api/calidad-senal/CANAL-01"))
                 .andExpect(status().isOk())
@@ -182,6 +199,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-04 Caso de prueba: 04. Registra un paciente y permite consultarlo.
     void registraYObtienePaciente() throws Exception {
         mockMvc.perform(post("/api/pacientes")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -199,6 +217,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-05 Caso de prueba: 01. Devuelve elegibilidad para edad y perfil válidos.
     void evaluaElegibilidadDelPaciente() throws Exception {
         when(cardioVigia.esPacienteElegible(18, true)).thenReturn(true);
 
@@ -213,6 +232,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-05 Caso de prueba: 02. Devuelve exclusión para datos no elegibles.
     void excluyePacienteNoElegible() throws Exception {
         when(cardioVigia.esPacienteElegible(17, false)).thenReturn(false);
 
@@ -227,6 +247,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-06/RF-07 Caso de prueba: 01. Transforma una probabilidad inválida en error HTTP.
     void evaluaAlertaInvalida() throws Exception {
         when(cardioVigia.clasificarNivelRiesgo(anyDouble()))
                 .thenThrow(new IllegalArgumentException("probabilidad inválida"));
@@ -242,6 +263,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-06/RF-07 Caso de prueba: 02. Verifica clasificación y notificación de riesgo.
     void clasificaProbabilidadesEnLimitesDeRiesgo() throws Exception {
         when(cardioVigia.clasificarNivelRiesgo(20.0)).thenReturn("MODERADO");
         when(cardioVigia.determinarNotificacion("MODERADO")).thenReturn("INDICACION_VISUAL");
@@ -257,6 +279,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-06 Caso de prueba: 03. Rechaza probabilidad fuera del rango permitido.
     void rechazaProbabilidadEnLimitesInvalidos() throws Exception {
         when(cardioVigia.clasificarNivelRiesgo(anyDouble()))
                 .thenThrow(new IllegalArgumentException("probabilidad inválida"));
@@ -271,6 +294,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-08 Caso de prueba: 01. Verifica destinos de escalamiento crítico y alto.
     void validaLimitesDeEscalamiento() throws Exception {
         when(cardioVigia.evaluarEscalamiento("CRITICO", 30)).thenReturn("COORDINADOR_UCI");
         when(cardioVigia.evaluarEscalamiento("ALTO", 60)).thenReturn("CIRUJANO");
@@ -293,6 +317,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-09 Caso de prueba: 01. Activa modo degradado ante pérdida de señal y falla de IA.
     void evaluaModoDegradado() throws Exception {
         when(cardioVigia.debeActivarModoDegradado(16, true)).thenReturn(true);
 
@@ -307,6 +332,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-10 Caso de prueba: 01. Verifica recepción del resumen y estado de auditoría HCE.
     void enviaResumenYConsultaEstadoHCE() throws Exception {
         mockMvc.perform(post("/api/hce/resumen")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -330,6 +356,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-11 Caso de prueba: 01. Bloquea actualización de umbrales durante cirugía.
     void bloqueaUmbralesDuranteCirugia() throws Exception {
         mockMvc.perform(put("/api/config/umbrales")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -345,6 +372,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-11 Caso de prueba: 02. Acepta umbrales válidos fuera de cirugía.
     void aceptaUmbralesValidos() throws Exception {
         mockMvc.perform(put("/api/config/umbrales")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -361,6 +389,7 @@ class CardioVigiaControllerTest {
     }
 
     @Test
+    // RF-11 Caso de prueba: 03. Rechaza umbrales apenas fuera de los límites.
     void rechazaUmbralesApenasFueraDeLosLimites() throws Exception {
         mockMvc.perform(put("/api/config/umbrales")
                         .contentType(MediaType.APPLICATION_JSON)

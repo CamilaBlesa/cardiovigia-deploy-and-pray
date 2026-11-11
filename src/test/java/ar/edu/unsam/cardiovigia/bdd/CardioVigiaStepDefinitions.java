@@ -7,6 +7,13 @@ import io.cucumber.java.en.When;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Implementación de los pasos Gherkin del feature de CardioVigia.
+ *
+ * Los comentarios RF identifican el requisito funcional y cada escenario del
+ * feature debe mantener sus etiquetas RF para conservar la trazabilidad.
+ * Esta clase adapta los pasos del módulo BDD a la lógica de dominio.
+ */
 public class CardioVigiaStepDefinitions {
 
     private final CardioVigia cardioVigia = new CardioVigia();

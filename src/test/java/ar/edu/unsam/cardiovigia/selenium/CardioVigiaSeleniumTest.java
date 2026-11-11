@@ -12,6 +12,12 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Pruebas E2E del flujo visible de la aplicación.
+ *
+ * Cada caso identificado como RF-xx Caso de prueba: xx valida un requisito desde el navegador, incluyendo la
+ * interacción con el formulario y el texto final mostrado al usuario.
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CardioVigiaSeleniumTest {
 
@@ -30,6 +36,7 @@ class CardioVigiaSeleniumTest {
     }
 
     @Test
+    // RF-01/RF-03 Caso de prueba: 01. Valida signos correctos y canal confiable en la UI.
     void testValidacionSignosVitalesWeb() {
         driver.get("http://localhost:" + port);
         driver.findElement(By.id("fc")).clear();
@@ -40,6 +47,7 @@ class CardioVigiaSeleniumTest {
     }
 
     @Test
+    // RF-01/RF-03 Caso de prueba: 02. Muestra rechazo para frecuencia fuera de rango.
     void testRechazaSignosVitalesFueraDeRangoWeb() {
         driver.get("http://localhost:" + port);
         driver.findElement(By.id("fc")).clear();
@@ -50,6 +58,7 @@ class CardioVigiaSeleniumTest {
     }
 
     @Test
+    // RF-06/RF-07 Caso de prueba: 01. Muestra alerta sonora para riesgo crítico.
     void testAlertaCriticaWeb() {
         driver.get("http://localhost:" + port);
         driver.findElement(By.id("probabilidad")).clear();
@@ -60,6 +69,7 @@ class CardioVigiaSeleniumTest {
     }
 
     @Test
+    // RF-06 Caso de prueba: 02. Muestra error de validación para probabilidad inválida.
     void testRechazaProbabilidadFueraDeRangoWeb() {
         driver.get("http://localhost:" + port);
         driver.findElement(By.id("probabilidad")).clear();
