@@ -1,0 +1,54 @@
+RESULTADO DE PRUEBA DE CARGA
+
+Caso:
+RNF-CG Caso de prueba: 01
+
+Fecha de ejecución:
+11/11/2026
+
+Herramienta:
+Apache JMeter 5.6.3
+
+Endpoint evaluado:
+POST /api/signos-vitales/validar
+
+Configuración:
+- Usuarios virtuales: 24
+- Iteraciones por usuario: 4
+- Requests totales: 96
+- Ramp-up: 24 segundos
+- Mismo usuario en cada iteración: activado
+- Error permitido: 0%
+
+Se configuró JMeter con 24 usuarios virtuales, manteniendo el mismo usuario en
+cada iteración y cuatro iteraciones por usuario, totalizando 96 requests.
+
+
+Resultados:
+- Promedio: 1 ms
+- Mediana: 1 ms
+- Percentil 90: 3 ms
+- Percentil 95: 3 ms
+- Percentil 99: 16 ms
+- Tiempo mínimo: 0 ms
+- Tiempo máximo: 27 ms
+- Porcentaje de errores: 0,00%
+- Throughput: 101,26582 requests/segundo
+- Datos recibidos: 33,82 KB/segundo
+- Datos enviados: 40,94 KB/segundo
+
+Criterios de aceptación:
+- P95 menor a 2 segundos: CUMPLE
+- Tiempo máximo menor a 5 segundos: CUMPLE
+- Porcentaje de errores igual a 0%: CUMPLE
+- Carga de 24 usuarios virtuales: CUMPLE
+
+Conclusión:
+La prueba de carga puntual cumplió los criterios de tiempo de respuesta y
+ausencia de errores para 24 usuarios virtuales y 96 requests.
+
+Evidencia exportada:
+resultados/pacientesSimultaneos.csv
+
+Esta corrida es puntual y no demuestra disponibilidad mensual ni recuperación
+ante fallos.
