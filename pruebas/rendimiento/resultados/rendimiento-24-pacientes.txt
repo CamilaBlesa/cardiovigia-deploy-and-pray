@@ -49,6 +49,3 @@ ausencia de errores para 24 usuarios virtuales y 96 requests.
 
 Evidencia exportada:
 resultados/pacientesSimultaneos.csv
-
-Esta corrida es puntual y no demuestra disponibilidad mensual ni recuperación
-ante fallos.
