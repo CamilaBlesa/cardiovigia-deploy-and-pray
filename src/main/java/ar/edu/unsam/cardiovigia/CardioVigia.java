@@ -1,5 +1,8 @@
 package ar.edu.unsam.cardiovigia;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CardioVigia {
 
     public boolean validarFrecuenciaCardiaca(int fc) {
